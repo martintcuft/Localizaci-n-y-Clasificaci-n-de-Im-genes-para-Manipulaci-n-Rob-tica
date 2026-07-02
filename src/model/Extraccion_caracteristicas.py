@@ -113,7 +113,7 @@ def walala(imagen):
 
 
 
-imagen = "C:\\Users\\Alumno\\Documents\\GitHub\\Localizaci-n-y-Clasificaci-n-de-Im-genes-para-Manipulaci-n-Rob-tica\\dataset\\Test\\TEST_3.jpg"
+imagen = "C:\\Users\\Alumno\\Documents\\GitHub\\Localizaci-n-y-Clasificaci-n-de-Im-genes-para-Manipulaci-n-Rob-tica\\dataset\\Test_1\\WIN_20260702_17_07_52_Pro.jpg"
 
 Carct_img(imagen)
 esquinas_Harrrisi(imagen)
