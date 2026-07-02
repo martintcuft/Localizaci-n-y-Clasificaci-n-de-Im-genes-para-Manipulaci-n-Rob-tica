@@ -103,7 +103,7 @@ def walala(imagen):
         # Obtener el rectángulo delimitador (Bounding Box)
         x, y, ancho, alto = cv2.boundingRect(c)
         # (Ancho x Alto) en la imagen en color AZUL
-        
+
         texto = f"{ancho}x{alto} px"
 
         cv2.putText(img, texto, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
@@ -134,5 +134,5 @@ Carct_img(imagen)
 esquinas_Harrrisi(imagen)
 bordes(imagen)
 walala(imagen)
-
-# ruta ; Alto ; LARGO ; x, Y ; ROTACION ;  CLASE 
+#Punto o o imagen original procesada ; input imagen Output ubicacion
+# ruta ; Alto ; LARGO ; x, Y ; imagen ; CLASE 

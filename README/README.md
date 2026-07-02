@@ -5,5 +5,5 @@ Robot:
      Dobot magican
 Camara:
 
-Objetos: 
-     Círculos y poligonos
+Clases: 
+     Círculos , poligonos , Fondo
