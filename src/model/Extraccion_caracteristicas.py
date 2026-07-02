@@ -1,7 +1,8 @@
-# Import required libraries
+# Import required libraries ; ETIQUETADO AUTOMATICO 
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from PIL import Image
 
 def Carct_img(imagen):
     img = cv2.imread(imagen)
@@ -88,6 +89,8 @@ def walala(imagen):
     # Operamos sobre la imagen en gris (debe ser tipo float32)
     gris_float = np.float32(gris)
     dest_esquinas = cv2.cornerHarris(gris_float, blockSize=2, ksize=3, k=0.04)
+
+
     # Dilatamos el resultado para que las esquinas se vean más grandes al dibujar
     dest_esquinas = cv2.dilate(dest_esquinas, None)
     # Marcamos las esquinas en la imagen original en color ROJO
@@ -128,11 +131,54 @@ def walala(imagen):
 
 
 
+def delizante(image,filas, columnas):
+    img = cv2.imread(image)
+    ancho, alto , c = img.shape
+
+    # Calculamos el tamaño de cada parte
+    ancho_parte = ancho // columnas
+    alto_parte = alto // filas
+
+    contador = 0
+    for y in range(filas):
+        for x in range(columnas):
+            # Definimos las coordenadas del cuadro: (izquierda, arriba, derecha, abajo)
+            izquierda = x * ancho_parte
+            arriba = y * alto_parte
+            derecha = izquierda + ancho_parte
+            abajo = arriba + alto_parte
+            
+            # Recortamos y guardamos la imagen
+            #parte = img.crop((izquierda, arriba, derecha, abajo))
+
+            imagen_recortada = imagen[arriba:abajo, izquierda:derecha]
+
+            # Guardar el resultado
+            cv2.imwrite("recorte.jpg", imagen_recortada)
+
+            cv2.imshow('contador', imagen_recortada)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+            #parte.save(f"parte_{contador}.png")
+
+            contador += 1
+
+
+    
+
+
+
 imagen = "C:\\Users\\Alumno\\Documents\\GitHub\\Localizaci-n-y-Clasificaci-n-de-Im-genes-para-Manipulaci-n-Rob-tica\\dataset\\Test_1\\WIN_20260702_17_07_52_Pro.jpg"
+delizante(imagen,2, 2)
+    
+""""
 
 Carct_img(imagen)
 esquinas_Harrrisi(imagen)
 bordes(imagen)
 walala(imagen)
 #Punto o o imagen original procesada ; input imagen Output ubicacion
-# ruta ; Alto ; LARGO ; x, Y ; imagen ; CLASE 
+# RUTA ; ALTO ; LARGO ; x, Y ; imagen ; CLASE 
+# CARAC ; IMAGEN ; CLASE
+"""
