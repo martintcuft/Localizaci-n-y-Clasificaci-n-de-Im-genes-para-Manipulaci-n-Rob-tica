@@ -10,15 +10,19 @@ def Carct_img(imagen):
 
     #Convert GRAY
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (1, 1), 2) #5,5
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0) #5,5
     # Apply Canny edge detection
     edges = cv2.Canny(blurred, threshold1=100, threshold2=200)
 
     # Display the results
+    cv2.imshow('gray', gray)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
-    plt.imshow(image_rgb)
-    plt.title('Original Image')
+    plt.imshow(gray)
+    plt.title('Original Image gray')
     plt.axis('off')
 
     plt.subplot(1, 2, 2)
@@ -40,13 +44,18 @@ def esquinas_Harrrisi(imgen):
     # Find the coordinates from the boolean bitmap
     coord = np.argwhere(corners)
     # Draw circles on the coordinates to mark the corners
+    i= 0
     for y, x in coord:
         cv2.circle(img, (x,y), 3, (0,0,255), -1)
+        print(f"Coordenadas = {x},{y} , {i}")
+        i+=1
     
     # Display the image with corners
     cv2.imshow('Harris Corners', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
 
 def bordes(imgen):
     img = cv2.imread(imgen)
@@ -62,18 +71,20 @@ def bordes(imgen):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+    
+
 def walala(imagen):
     img = cv2.imread(imagen)
     img_original = img.copy()
 
-    # 2. Preprocesamiento (Grises y desenfoque para reducir ruido)
+    # Preprocesamiento (Grises y desenfoque para reducir ruido)
     gris = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     suave = cv2.GaussianBlur(gris, (5, 5), 0)
 
-    # 3. Detección de Bordes (Canny)
+    #Detección de Bordes (Canny)
     bordes = cv2.Canny(suave, 50, 150)
 
-    # 4. Detección de Esquinas (Harris)
+    #Detección de Esquinas (Harris)
     # Operamos sobre la imagen en gris (debe ser tipo float32)
     gris_float = np.float32(gris)
     dest_esquinas = cv2.cornerHarris(gris_float, blockSize=2, ksize=3, k=0.04)
@@ -82,7 +93,7 @@ def walala(imagen):
     # Marcamos las esquinas en la imagen original en color ROJO
     img[dest_esquinas > 0.01 * dest_esquinas.max()] = [0, 0, 255]
 
-    # 5. Encontrar Contornos para medir Ancho y Alto
+    # Contornos para medir Ancho y Alto
     contornos, _ = cv2.findContours(bordes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     for c in contornos:
@@ -91,18 +102,22 @@ def walala(imagen):
             
         # Obtener el rectángulo delimitador (Bounding Box)
         x, y, ancho, alto = cv2.boundingRect(c)
+        # (Ancho x Alto) en la imagen en color AZUL
         
-        # Dibujar el rectángulo delimitador en color VERDE
-        cv2.rectangle(img, (x, y), (x + ancho, y + alto), (0, 255, 0), 2)
-        
-        # Escribir las medidas (Ancho x Alto) en la imagen en color AZUL
         texto = f"{ancho}x{alto} px"
-        cv2.putText(img, texto, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
-    # OPCIÓN A: Mostrar en una ventana interactiva de OpenCV (Ideal para scripts locales)
-    cv2.imshow('Bordes, Esquinas y Medidas', img)
-    cv2.waitKey(0)  # Espera a que presiones cualquier tecla para cerrar la ventana
-    cv2.destroyAllWindows()
+        cv2.putText(img, texto, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        
+        if(ancho == 383 and alto == 389):
+            print("Cuadrado")
+            print(x, y, ancho, alto)
+            # Dibujar el rectángulo delimitador en color VERDE
+            cv2.rectangle(img, (x, y), (x + ancho, y + alto), (0, 255, 0), 2)
+        if(ancho == 112 and alto == 109):
+            print("circulo")
+            print(x, y, ancho, alto)
+            cv2.rectangle(img, (x, y), (x + ancho, y + alto), (0, 255, 0), 2)
+
 
     # OpenCV usa BGR, Matplotlib usa RGB; por eso convertimos los colores
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -119,3 +134,5 @@ Carct_img(imagen)
 esquinas_Harrrisi(imagen)
 bordes(imagen)
 walala(imagen)
+
+# ruta ; Alto ; LARGO ; x, Y ; ROTACION ;  CLASE 
